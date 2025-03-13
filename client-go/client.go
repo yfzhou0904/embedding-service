@@ -15,11 +15,11 @@ type TextEmbeddingRequest struct {
 
 // TextEmbeddingResponse represents the response from the server.
 type TextEmbeddingResponse struct {
-	Embedding []float64 `json:"embedding"`
+	Embedding []float32 `json:"embedding"`
 }
 
 // GetTextEmbedding sends a text to the server and returns the embedding.
-func GetTextEmbedding(serverURL, text string) ([]float64, error) {
+func GetTextEmbedding(serverURL, text string) ([]float32, error) {
 	requestBody, err := json.Marshal(TextEmbeddingRequest{Text: text})
 	if err != nil {
 		return nil, err
