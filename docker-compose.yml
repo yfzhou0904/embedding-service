@@ -1,0 +1,14 @@
+services:
+  embedding-service:
+    image: embedding-service:latest
+    # image: ghcr.io/yfzhou0904/embedding-service:latest
+    container_name: embedding-service
+    ports:
+      - "127.0.0.1:1088:80"
+    volumes:
+      - models-cache:/root/.cache/
+    environment:
+      - LISTEN_ADDRESS=${LISTEN_ADDRESS:-0.0.0.0:80}
+    restart: no
+volumes:
+  models-cache:
