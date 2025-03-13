@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from transformers import AutoTokenizer, AutoModel
+from torch.nn.functional import normalize
 import torch
 import os
 from dotenv import load_dotenv
@@ -19,8 +20,9 @@ def get_text_embedding():
     inputs = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=512)
     with torch.no_grad():
         outputs = model(**inputs)
-    embedding = outputs.last_hidden_state.mean(dim=1).squeeze().tolist()
-    return jsonify({'embedding': embedding})
+    embedding = outputs.last_hidden_state.mean(dim=1).squeeze()
+    normalized_embedding = normalize(embedding, p=2, dim=0).tolist()
+    return jsonify({'embedding': normalized_embedding})
 
 if __name__ == '__main__':
     listen_address = os.environ.get('LISTEN_ADDRESS', '0.0.0.0:80')
